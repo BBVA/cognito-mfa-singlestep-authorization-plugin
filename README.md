@@ -1,4 +1,6 @@
-# GoCD Authorization Plugin Skeleton
+# Cognito MFA single-step GoCD Authorization Plugin
+
+## From the skeleton README
 
 This is merely a skeleton plugin that plugin developers can fork to get quickly started with writing authorization plugins for GoCD.
 
@@ -6,7 +8,7 @@ All the documentation is hosted [here](https://plugin-api.gocd.io/current/author
 
 ## Getting started
 
-* Edit the file `build.gradle` to change the plugin id, description and some other metadata
+* Edit the file `build.gradlej to change the plugin id, description and some other metadata
 * Edit the file `settings.gradle` to change the name of this project
 * Add your icon to plugin by changing class `GetPluginIconExecutor.java` (Note: place your icon under `resources` folder)
 * Edit the file `GetCapabilitiesExecutor.java` to provide your plugin capabilities
