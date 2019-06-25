@@ -31,10 +31,6 @@ public class CognitoMFASingleStepPlugin implements GoPlugin {
                     return new GetPluginIconExecutor().execute();
                 case REQUEST_GET_CAPABILITIES:
                     return new GetCapabilitiesExecutor().execute();
-                case REQUEST_GET_USER_ROLES:
-                    return new GetUseRolesExecutor(request).execute();
-                case IS_VALID_USER:
-                    return new IsValidUserExecutor(request).execute();
                 case REQUEST_GET_AUTH_CONFIG_METADATA:
                     return new GetAuthConfigMetadataExecutor().execute();
                 case REQUEST_AUTH_CONFIG_VIEW:
@@ -43,19 +39,8 @@ public class CognitoMFASingleStepPlugin implements GoPlugin {
                     return new AuthConfigValidateRequestExecutor(request).execute();
                 case REQUEST_VERIFY_CONNECTION:
                     return new VerifyConnectionRequestExecutor(request).execute();
-                case REQUEST_GET_ROLE_CONFIG_METADATA:
-                    return new GetRoleConfigMetadataExecutor().execute();
-                case REQUEST_ROLE_CONFIG_VIEW:
-                    return new GetRoleConfigViewExecutor().execute();
-                case REQUEST_VALIDATE_ROLE_CONFIG:
-                    return new RoleConfigValidateRequestExecutor(request).execute();
                 case REQUEST_AUTHENTICATE_USER:
-                    return new UserAuthenticationExecutor(request, new Authenticator(), new Authorizer()).execute();
-                /*
-                case REQUEST_SEARCH_USERS:
-                    return new SearchUserExecutor(request).execute();
-                */
-
+                    return new UserAuthenticationExecutor(request, new Authenticator()).execute();
                 default:
                     throw new UnhandledRequestTypeException(request.requestName());
             }

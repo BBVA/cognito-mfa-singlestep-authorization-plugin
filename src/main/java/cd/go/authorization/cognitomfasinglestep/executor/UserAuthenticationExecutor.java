@@ -1,7 +1,6 @@
 package cd.go.authorization.cognitomfasinglestep.executor;
 
 import cd.go.authorization.cognitomfasinglestep.Authenticator;
-import cd.go.authorization.cognitomfasinglestep.Authorizer;
 import cd.go.authorization.cognitomfasinglestep.model.AuthConfig;
 import cd.go.authorization.cognitomfasinglestep.model.Credentials;
 import cd.go.authorization.cognitomfasinglestep.model.AuthenticationResponse;
@@ -20,12 +19,10 @@ public class UserAuthenticationExecutor implements RequestExecutor {
     private static final Gson GSON = new Gson();
     private final GoPluginApiRequest request;
     private final Authenticator authenticator;
-    private final Authorizer authorizer;
 
-    public UserAuthenticationExecutor(GoPluginApiRequest request, Authenticator authenticator, Authorizer authorizer) {
+    public UserAuthenticationExecutor(GoPluginApiRequest request, Authenticator authenticator) {
         this.request = request;
         this.authenticator = authenticator;
-        this.authorizer = authorizer;
     }
 
     @Override
