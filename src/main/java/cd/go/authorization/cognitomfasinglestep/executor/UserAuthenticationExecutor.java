@@ -37,8 +37,6 @@ public class UserAuthenticationExecutor implements RequestExecutor {
         if (authenticationResponse != null) {
             userMap.put("user", authenticationResponse.getUser());
             final List<String> assignedRoles = new ArrayList<>();
-            assignedRoles.add("admin");
-            assignedRoles.add("superpepe");
             userMap.put("roles", assignedRoles);
         }
 

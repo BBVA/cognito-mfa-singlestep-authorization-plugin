@@ -4,6 +4,7 @@ import cd.go.authorization.cognitomfasinglestep.model.AuthConfig;
 import cd.go.authorization.cognitomfasinglestep.model.AuthenticationResponse;
 import cd.go.authorization.cognitomfasinglestep.model.Credentials;
 import cd.go.authorization.cognitomfasinglestep.model.User;
+import cd.go.authorization.cognitomfasinglestep.CompoundSecret;
 
 import com.amazonaws.services.cognitoidp.AWSCognitoIdentityProvider;
 import com.amazonaws.services.cognitoidp.model.*;
@@ -17,11 +18,14 @@ import java.util.List;
 public class Authenticator {
     public AuthenticationResponse authenticate(Credentials credentials, List<AuthConfig> authConfigs) {
         final String clientId = authConfigs.get(0).getConfiguration().getClientId();
-        final String passwordField = credentials.getPassword();
-        final String password = passwordField.substring(0, passwordField.length() - 6);
-        final String totp = passwordField.substring(passwordField.length() - 6);
+        final CompoundSecret secret;
 
-        LOG.info("User:" + credentials.getUsername() + " Password:" + password + " TOTP:" + totp);
+        try {
+             secret = new CompoundSecret(credentials.getPassword());
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+
         try {
             AWSCognitoIdentityProvider cognito = AWSCognitoIdentityProviderClientBuilder.defaultClient();
 
@@ -29,7 +33,7 @@ public class Authenticator {
             authRequest.setAuthFlow("USER_PASSWORD_AUTH");
             authRequest.setClientId(clientId);
             authRequest.addAuthParametersEntry("USERNAME", credentials.getUsername());
-            authRequest.addAuthParametersEntry("PASSWORD", password);
+            authRequest.addAuthParametersEntry("PASSWORD", secret.getPassword());
 
             InitiateAuthResult auth = cognito.initiateAuth(authRequest);
             if (auth.getChallengeName().equals("SOFTWARE_TOKEN_MFA")) {
@@ -38,7 +42,7 @@ public class Authenticator {
                 challengeRequest.setSession(auth.getSession());
                 challengeRequest.setClientId(clientId);
                 challengeRequest.addChallengeResponsesEntry("USERNAME", credentials.getUsername());
-                challengeRequest.addChallengeResponsesEntry("SOFTWARE_TOKEN_MFA_CODE", totp);
+                challengeRequest.addChallengeResponsesEntry("SOFTWARE_TOKEN_MFA_CODE", secret.getTOTP());
                 RespondToAuthChallengeResult login = cognito.respondToAuthChallenge(challengeRequest);
 
                 GetUserRequest userRequest = new GetUserRequest();
