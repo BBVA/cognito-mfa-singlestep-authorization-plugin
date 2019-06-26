@@ -1,6 +1,5 @@
 package cd.go.authorization.cognitomfasinglestep;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
