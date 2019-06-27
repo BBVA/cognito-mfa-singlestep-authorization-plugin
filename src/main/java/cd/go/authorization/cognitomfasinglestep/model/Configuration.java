@@ -13,21 +13,12 @@ import static cd.go.authorization.cognitomfasinglestep.utils.Util.GSON;
 public class Configuration {
 
     @Expose
-    @SerializedName("Region")
-    @ProfileField(key = "Region", required = true, secure = false)
-    private String region;
-
-    @Expose
     @SerializedName("ClientId")
     @ProfileField(key = "ClientId", required = true, secure = false)
     private String clientId;
 
     public static Configuration fromJSON(String json) {
         return GSON.fromJson(json, Configuration.class);
-    }
-
-    public String getRegion() {
-        return region;
     }
 
     public String getClientId() {

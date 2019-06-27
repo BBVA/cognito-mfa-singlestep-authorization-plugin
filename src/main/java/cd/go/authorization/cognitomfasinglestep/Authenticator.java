@@ -50,7 +50,6 @@ public class Authenticator {
             AuthConfig config = new AuthConfig();
             return new AuthenticationResponse(user, config);
         }
-
         return null;
     }
 }
