@@ -5,17 +5,16 @@ import com.amazonaws.services.cognitoidp.AWSCognitoIdentityProvider;
 import com.amazonaws.services.cognitoidp.model.*;
 import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-public class CognitoClientTest {
+public class CognitoMFASingleStepClientTest {
     @Test
     public void loginShouldReturnNullWhenUserNotFound() throws Exception {
         AWSCognitoIdentityProvider cognito = mock(AWSCognitoIdentityProvider.class);
         when(cognito.initiateAuth(any())).thenThrow(UserNotFoundException.class);
 
-        CognitoClient client = new CognitoClient(cognito, "clientid");
+        CognitoMFASingleStepClient client = new CognitoMFASingleStepClient(cognito, "clientid");
 
         assertNull(client.login("USER", "PASS", "OTP"));
     }
@@ -25,7 +24,7 @@ public class CognitoClientTest {
         AWSCognitoIdentityProvider cognito = mock(AWSCognitoIdentityProvider.class);
         when(cognito.initiateAuth(any())).thenThrow(NotAuthorizedException.class);
 
-        CognitoClient client = new CognitoClient(cognito, "clientid");
+        CognitoMFASingleStepClient client = new CognitoMFASingleStepClient(cognito, "clientid");
 
         assertNull(client.login("USER", "PASS", "OTP"));
     }
@@ -37,7 +36,7 @@ public class CognitoClientTest {
         when(cognito.initiateAuth(any())).thenReturn(auth);
         when(auth.getChallengeName()).thenReturn("MFA_SETUP");
 
-        CognitoClient client = new CognitoClient(cognito, "clientid");
+        CognitoMFASingleStepClient client = new CognitoMFASingleStepClient(cognito, "clientid");
 
         client.login("USER", "PASS", "OTP");
     }
@@ -50,7 +49,7 @@ public class CognitoClientTest {
         when(auth.getChallengeName()).thenReturn("SOFTWARE_TOKEN_MFA");
         when(cognito.respondToAuthChallenge(any())).thenThrow(CodeMismatchException.class);
 
-        CognitoClient client = new CognitoClient(cognito, "clientid");
+        CognitoMFASingleStepClient client = new CognitoMFASingleStepClient(cognito, "clientid");
 
         assertNull(client.login("USER", "PASS", "OTP"));
     }
@@ -69,7 +68,7 @@ public class CognitoClientTest {
         when(login.getAuthenticationResult().getAccessToken()).thenReturn("TOKEN");
         when(cognito.getUser(any())).thenReturn(user);
 
-        CognitoClient client = new CognitoClient(cognito, "clientid");
+        CognitoMFASingleStepClient client = new CognitoMFASingleStepClient(cognito, "clientid");
 
         assertSame(client.login("USER", "PASS", "OTP"), user);
     }
