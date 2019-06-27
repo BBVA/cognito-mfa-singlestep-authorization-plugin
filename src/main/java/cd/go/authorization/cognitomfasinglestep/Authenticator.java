@@ -1,13 +1,12 @@
 package cd.go.authorization.cognitomfasinglestep;
 
-import cd.go.authorization.cognitomfasinglestep.model.AuthConfig;
-import cd.go.authorization.cognitomfasinglestep.model.AuthenticationResponse;
-import cd.go.authorization.cognitomfasinglestep.model.Credentials;
-import cd.go.authorization.cognitomfasinglestep.model.User;
+import cd.go.authorization.cognitomfasinglestep.model.*;
 
 import com.amazonaws.services.cognitoidp.AWSCognitoIdentityProvider;
 import com.amazonaws.services.cognitoidp.model.*;
 import com.amazonaws.services.cognitoidp.AWSCognitoIdentityProviderClientBuilder;
+
+import static cd.go.authorization.cognitomfasinglestep.CognitoMFASingleStepPlugin.LOG;
 
 import java.util.List;
 
@@ -22,33 +21,16 @@ public class Authenticator {
         }
 
         for (AuthConfig authConfig : authConfigs) {
-            final String clientId = authConfig.getConfiguration().getClientId();
-
-            AWSCognitoIdentityProvider cognito = AWSCognitoIdentityProviderClientBuilder.defaultClient();
-
-            CognitoSingleStepLoginManager loginManager = new CognitoSingleStepLoginManager(cognito, clientId);
-
-            GetUserResult cognitouser = loginManager.login(credentials.getUsername(), secret.getPassword(), secret.getTOTP());
-            if (cognitouser == null) continue;
-
-            String username = cognitouser.getUsername();
-            String displayName = null;
-            String emailId = null;
-
-            for (AttributeType attr : cognitouser.getUserAttributes()){
-                switch (attr.getName()) {
-                    case "email":
-                        emailId = attr.getValue();
-                        break;
-                    case "preferred_username":
-                        displayName = attr.getValue();
-                        break;
-                }
-
+            Configuration config = authConfig.getConfiguration();
+            try {
+                AWSCognitoIdentityProvider cognito = AWSCognitoIdentityProviderClientBuilder.standard().withRegion(config.getRegionName()).build();
+                CognitoSingleStepLoginManager loginManager = new CognitoSingleStepLoginManager(cognito, config.getClientId());
+                GetUserResult cognitouser = loginManager.login(credentials.getUsername(), secret.getPassword(), secret.getTOTP());
+                if (cognitouser == null) continue;
+                return new AuthenticationResponse(new User(cognitouser), new AuthConfig());
+            } catch (Throwable e) {
+                LOG.error("Unexpected error on user login", e);
             }
-            User user = new User(username, displayName, emailId);
-            AuthConfig config = new AuthConfig();
-            return new AuthenticationResponse(user, config);
         }
         return null;
     }

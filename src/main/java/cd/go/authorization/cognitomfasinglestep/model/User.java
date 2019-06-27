@@ -1,9 +1,14 @@
 package cd.go.authorization.cognitomfasinglestep.model;
 
 import cd.go.authorization.cognitomfasinglestep.exception.InvalidUsernameException;
+import com.amazonaws.services.cognitoidp.model.AttributeType;
+import com.amazonaws.services.cognitoidp.model.GetUserResult;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang3.StringUtils;
+import org.w3c.dom.Attr;
+
+import java.util.List;
 
 public class User {
     @Expose
@@ -22,6 +27,30 @@ public class User {
         this.username = username;
         this.displayName = displayName;
         this.emailId = emailId == null ? null : emailId.toLowerCase().trim();
+
+        if (StringUtils.isBlank(this.username)) {
+            throw new InvalidUsernameException("Username can not be blank.");
+        }
+    }
+
+    public User(GetUserResult cognitouser) {
+        this.username = cognitouser.getUsername();
+        this.displayName = null;
+        this.emailId = null;
+
+        List<AttributeType> attrs = cognitouser.getUserAttributes();
+        if (attrs != null) {
+            for (AttributeType attr : cognitouser.getUserAttributes()) {
+                switch (attr.getName()) {
+                    case "email":
+                        this.emailId = attr.getValue();
+                        break;
+                    case "preferred_username":
+                        this.displayName = attr.getValue();
+                        break;
+                }
+            }
+        }
 
         if (StringUtils.isBlank(this.username)) {
             throw new InvalidUsernameException("Username can not be blank.");

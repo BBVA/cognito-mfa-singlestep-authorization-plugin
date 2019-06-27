@@ -3,3 +3,8 @@
     <input ng-class="{'is-invalid-input': GOINPUTNAME[ClientId].$error.server}" type="text" ng-model="ClientId" ng-required="true" placeholder="value"/>
     <span class="form_error form-error" ng-class="{'is-visible': GOINPUTNAME[ClientId].$error.server}" ng-show="GOINPUTNAME[ClientId].$error.server">{{GOINPUTNAME[ClientId].$error.server}}</span>
 </div>
+<div class="form_item_block">
+    <label ng-class="{'is-invalid-label': GOINPUTNAME[RegionName].$error.server}">RegionName</label>
+    <input ng-class="{'is-invalid-input': GOINPUTNAME[RegionName].$error.server}" type="text" ng-model="RegionName" ng-required="true" placeholder="value"/>
+    <span class="form_error form-error" ng-class="{'is-visible': GOINPUTNAME[RegionName].$error.server}" ng-show="GOINPUTNAME[RegionName].$error.server">{{GOINPUTNAME[RegionName].$error.server}}</span>
+</div>
