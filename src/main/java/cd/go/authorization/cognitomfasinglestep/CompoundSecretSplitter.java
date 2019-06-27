@@ -3,12 +3,12 @@ package cd.go.authorization.cognitomfasinglestep;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
-public class CompoundSecret {
+public class CompoundSecretSplitter {
     private final Pattern format = Pattern.compile("^(.*)(\\d{6})$", Pattern.DOTALL);
     private final String password;
     private final String totp;
 
-    public CompoundSecret(String secret) {
+    public CompoundSecretSplitter(String secret) {
         Matcher matcher = format.matcher(secret);
         if (matcher.matches()) {
             password = matcher.group(1);

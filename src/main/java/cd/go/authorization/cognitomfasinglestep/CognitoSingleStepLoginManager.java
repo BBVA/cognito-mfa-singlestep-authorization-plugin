@@ -5,22 +5,25 @@ import cd.go.authorization.cognitomfasinglestep.exception.InvalidCognitoUserStat
 import com.amazonaws.services.cognitoidp.AWSCognitoIdentityProvider;
 import com.amazonaws.services.cognitoidp.model.*;
 
-public class CognitoMFASingleStepClient {
+public class CognitoSingleStepLoginManager {
     final private AWSCognitoIdentityProvider cognito;
     final private String cognitoClientId;
-    public CognitoMFASingleStepClient(AWSCognitoIdentityProvider client, String clientId) {
+
+    public CognitoSingleStepLoginManager(AWSCognitoIdentityProvider client, String clientId) {
         cognito = client;
         cognitoClientId = clientId;
     }
 
     public GetUserResult login(String user, String password, String totp) {
-
         try {
-            InitiateAuthResult auth = initiateAuth(user, password);
+            InitiateAuthResult auth = startAuth(user, password);
             if (!auth.getChallengeName().equals("SOFTWARE_TOKEN_MFA")) {
-                throw new InvalidCognitoUserStateException("Invalid challenge name: " + auth.getChallengeName());
+                throw new InvalidCognitoUserStateException("Invalid challenge type: " + auth.getChallengeName());
             }
             RespondToAuthChallengeResult login = finishAuth(auth.getSession(), user, totp);
+            if (login.getChallengeName() != null) {
+                throw new InvalidCognitoUserStateException("Unexpected challenge: " + auth.getChallengeName());
+            }
 
             GetUserRequest userRequest = new GetUserRequest();
             userRequest.setAccessToken(login.getAuthenticationResult().getAccessToken());
@@ -31,7 +34,7 @@ public class CognitoMFASingleStepClient {
         }
     }
 
-    private InitiateAuthResult initiateAuth(String user, String password) {
+    private InitiateAuthResult startAuth(String user, String password) {
         InitiateAuthRequest authRequest = new InitiateAuthRequest();
         authRequest.setAuthFlow("USER_PASSWORD_AUTH");
         authRequest.setClientId(cognitoClientId);
