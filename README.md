@@ -35,7 +35,8 @@ Alternatively you can set the configuration in `cruise-config.xml`:
 
 In the configuration of your Cognito User Pool make sure that:
 
-- TOTP MFA is set as **mandatory**.
+- *Do you want to enable Multi-Factor Authentication (MFA)?* is set as **Required**.
+- *Which second factors do you want to enable?* have only the option **Time-based One-time Password** checked.
 
 And the Cognito User Pool App:
 
