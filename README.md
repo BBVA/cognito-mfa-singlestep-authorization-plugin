@@ -1,10 +1,14 @@
 # Cognito MFA single-step GoCD Authorization Plugin
 
+## Deployment
+
 Start GoCD with the following environment variable set:
 
 ```plain
 GOCD_PLUGIN_INSTALL_cognito-mfa-singlestep-authorization=https://github.com/BBVA/cognito-mfa-singlestep-authorization-plugin/releases/download/v0.0.1/cognito-mfa-singlestep-authorization-plugin-0.0.1.jar
 ```
+
+## Plugin Configuration
 
 Afterwards you can use the user interface configuration wizard to configure the plugin.
 
@@ -33,6 +37,8 @@ Alternatively you can set the configuration in `cruise-config.xml`:
 </cruise>
 ```
 
+## Cognito Configuration
+
 In the configuration of your Cognito User Pool make sure that:
 
 - *Do you want to enable Multi-Factor Authentication (MFA)?* is set as **Required**.
@@ -43,3 +49,19 @@ And the Cognito User Pool App:
 - Has *Enabled Identity Providers* **checked**.
 - Has *Enable username-password (non-SRP) flow for app-based authentication (USER_PASSWORD_AUTH)* **checked**.
 - The *App client secret* is **not set**. This can be achieved by **not checking** *Generate client secret* at creation time.
+
+## Usage
+
+With the plugin set and running you can use your Cognito User Pool **username** in GoCD for authentication.
+As the GoCD login page is not customizable you must use the password field to enter both your password and TOTP code.
+
+### Example
+
+- *Username:* user
+- *Password:* mypassword
+- *TOTP*: 123456
+
+To authenticate in GoCD with the given credentials you should type:
+
+- **user** in the *username field*
+- **mypassword123456** in the *password field*
