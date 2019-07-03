@@ -1,5 +1,9 @@
 # Cognito MFA single-step GoCD Authorization Plugin
 
+[![Build Status](https://travis-ci.org/BBVA/cognito-mfa-singlestep-authorization-plugin.svg?branch=master)](https://travis-ci.org/BBVA/cognito-mfa-singlestep-authorization-plugin)
+
+GoCD plugin for Cognito User Pools. Allowing TOTP MFA authentication in a single step rather than two.
+
 ## Deployment
 
 Start GoCD with the following environment variable set:
