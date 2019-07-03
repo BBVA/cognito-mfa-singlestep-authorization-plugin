@@ -20,7 +20,7 @@ Alternatively you can set the configuration in `cruise-config.xml`:
   <server ...>
     <security>
       <authConfigs>
-        <authConfig id="users" pluginId="cd.go.authorization.cognito-mfa-singlestep">
+        <authConfig id="cognito" pluginId="cd.go.authorization.cognito-mfa-singlestep">
           <property>
             <key>ClientId</key>
             <value>...</value>
@@ -36,6 +36,10 @@ Alternatively you can set the configuration in `cruise-config.xml`:
   </server>
 </cruise>
 ```
+With the proper values for:
+
+- *ClientId*: Should match the *App client id* of your Cognito User Pool App.
+- *RegionName*: The name of the AWS region where your User Pool lives. i.e. *eu-west-1*
 
 ## Cognito Configuration
 
