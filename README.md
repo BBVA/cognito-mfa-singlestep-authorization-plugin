@@ -33,3 +33,12 @@ Alternatively you can set the configuration in `cruise-config.xml`:
 </cruise>
 ```
 
+In the configuration of your Cognito User Pool make sure that:
+
+- TOTP MFA is set as **mandatory**.
+
+And the Cognito User Pool App:
+
+- Has *Enabled Identity Providers* **checked**.
+- Has *Enable username-password (non-SRP) flow for app-based authentication (USER_PASSWORD_AUTH)* **checked**.
+- The *App client secret* is **not set**.
