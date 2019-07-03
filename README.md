@@ -57,11 +57,11 @@ As the GoCD login page is not customizable you must use the password field to en
 
 ### Example
 
-- *Username:* user
+- *Username:* myuser
 - *Password:* mypassword
 - *TOTP*: 123456
 
 To authenticate in GoCD with the given credentials you should type:
 
-- **user** in the *username field*
+- **myuser** in the *username field*
 - **mypassword123456** in the *password field*
