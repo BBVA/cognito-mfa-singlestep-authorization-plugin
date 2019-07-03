@@ -47,16 +47,16 @@ With the proper values for:
 
 ## Cognito Configuration
 
-In the configuration of your Cognito User Pool make sure that:
+In the configuration settings of your Cognito User Pool make sure that:
 
 - *Do you want to enable Multi-Factor Authentication (MFA)?* is set as **Required**.
 - *Which second factors do you want to enable?* have only the option **Time-based One-time Password** checked.
 
-And the Cognito User Pool App:
+Also the Cognito User Pool App must:
 
-- Has *Enabled Identity Providers* **checked**.
-- Has *Enable username-password (non-SRP) flow for app-based authentication (USER_PASSWORD_AUTH)* **checked**.
-- The *App client secret* is **not set**. This can be achieved by **not checking** *Generate client secret* at creation time.
+- Have *Enabled Identity Providers* **checked**.
+- Have *Enable username-password (non-SRP) flow for app-based authentication (USER_PASSWORD_AUTH)* **checked**.
+- Have the *App client secret* **not set**. This can be achieved by **not checking** *Generate client secret* at creation time.
 
 ## Usage
 
