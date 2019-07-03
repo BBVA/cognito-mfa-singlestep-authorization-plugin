@@ -41,4 +41,4 @@ And the Cognito User Pool App:
 
 - Has *Enabled Identity Providers* **checked**.
 - Has *Enable username-password (non-SRP) flow for app-based authentication (USER_PASSWORD_AUTH)* **checked**.
-- The *App client secret* is **not set**.
+- The *App client secret* is **not set**. This can be achieved by **not checking** *Generate client secret* at creation time.
