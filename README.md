@@ -63,5 +63,4 @@ As the GoCD login page is not customizable you must use the password field to en
 
 To authenticate in GoCD with the given credentials you should type:
 
-- **myuser** in the *username field*
-- **mypassword123456** in the *password field*
+![login](./login.png)
