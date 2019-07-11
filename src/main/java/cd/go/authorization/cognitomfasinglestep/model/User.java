@@ -50,7 +50,6 @@ public class User {
     }
 
     public User(GetUserResult cognitouser) {
-        this.username = cognitouser.getUsername();
         this.displayName = null;
         this.emailId = null;
 
@@ -67,6 +66,8 @@ public class User {
                 }
             }
         }
+
+        this.username = this.emailId == null ? cognitouser.getUsername() : this.emailId;
 
         if (StringUtils.isBlank(this.username)) {
             throw new InvalidUsernameException("Username can not be blank.");
