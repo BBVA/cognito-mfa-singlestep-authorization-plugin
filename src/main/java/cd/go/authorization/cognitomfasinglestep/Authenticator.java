@@ -42,8 +42,9 @@ public class Authenticator {
                 AWSCognitoIdentityProvider cognito = AWSCognitoIdentityProviderClientBuilder.standard().withRegion(config.getRegionName()).build();
                 CognitoSingleStepLoginManager loginManager = new CognitoSingleStepLoginManager(cognito, config.getClientId());
                 GetUserResult cognitouser = loginManager.login(credentials.getUsername(), secret.getPassword(), secret.getTOTP());
-                if (cognitouser == null) continue;
-                return new AuthenticationResponse(new User(cognitouser), new AuthConfig());
+                if (cognitouser != null) {
+                    return new AuthenticationResponse(new User(cognitouser), new AuthConfig());
+                }
             } catch (Throwable e) {
                 LOG.error("Unexpected error on user login", e);
             }
