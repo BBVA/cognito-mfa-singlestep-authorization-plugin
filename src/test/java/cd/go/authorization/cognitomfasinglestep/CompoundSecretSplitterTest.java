@@ -25,7 +25,7 @@ public class CompoundSecretSplitterTest {
     @Test
     public void shouldSplitPasswordAndTOTP() throws Exception {
         CompoundSecretSplitter secret = new CompoundSecretSplitter("pass123456");
-        assertThat(secret.getPassword(), is("pass"));
+        assertThat(secret.getPassword(), is("pass"));  // TODO: Add explanation about failure
         assertThat(secret.getTOTP(), is("123456"));
     }
 
