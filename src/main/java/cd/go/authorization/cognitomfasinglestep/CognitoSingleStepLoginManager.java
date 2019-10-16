@@ -46,6 +46,7 @@ public class CognitoSingleStepLoginManager {
             return cognito.getUser(userRequest);
 
         } catch (InvalidCognitoUserCredentialsException e) {
+            // TODO: Remove this catch and return null on each step or add here some log messages if allowed
             return null;
         }
     }
