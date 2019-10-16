@@ -27,7 +27,7 @@ import static org.mockito.Mockito.*;
 public class CognitoSingleStepLoginManagerTest {
     @Test
     public void loginShouldReturnNullWhenUserNotFound() throws Exception {
-        AWSCognitoIdentityProvider cognito = mock(AWSCognitoIdentityProvider.class);
+        AWSCognitoIdentityProvider cognito = mock(AWSCognitoIdentityProvider.class);  // TODO: Learn about mockito annotations
         when(cognito.initiateAuth(any())).thenThrow(UserNotFoundException.class);
 
         CognitoSingleStepLoginManager client = new CognitoSingleStepLoginManager(cognito, "clientid");
