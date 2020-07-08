@@ -21,6 +21,8 @@ import cd.go.authorization.cognitomfasinglestep.exception.InvalidCognitoUserStat
 import com.amazonaws.services.cognitoidp.AWSCognitoIdentityProvider;
 import com.amazonaws.services.cognitoidp.model.*;
 
+import static cd.go.authorization.cognitomfasinglestep.CognitoMFASingleStepPlugin.LOG;
+
 public class CognitoSingleStepLoginManager {
     final private AWSCognitoIdentityProvider cognito;
     final private String cognitoClientId;
@@ -31,6 +33,10 @@ public class CognitoSingleStepLoginManager {
     }
 
     public GetUserResult login(String user, String password, String totp) {
+        GetUserResult userResult;
+        // NOTE: This weird-looking try-catch block shouldn't be split.
+        // To ensure we comply with PCI information disclosure policy this block erase the information about which of
+        // the steps taken in the authentication process actually fails.
         try {
             InitiateAuthResult auth = startAuth(user, password);
             if (!auth.getChallengeName().equals("SOFTWARE_TOKEN_MFA")) {
@@ -40,15 +46,15 @@ public class CognitoSingleStepLoginManager {
             if (login.getChallengeName() != null) {
                 throw new InvalidCognitoUserStateException("Unexpected challenge: " + auth.getChallengeName());
             }
-
             GetUserRequest userRequest = new GetUserRequest();
             userRequest.setAccessToken(login.getAuthenticationResult().getAccessToken());
-            return cognito.getUser(userRequest);
-
+            userResult = cognito.getUser(userRequest);
         } catch (InvalidCognitoUserCredentialsException e) {
-            // TODO: Remove this catch and return null on each step or add here some log messages if allowed
+            LOG.error("Cognito authentication failed for user {0}", user);
             return null;
         }
+        LOG.info("Cognito authentication succeeded for user {0}", user);
+        return userResult;
     }
 
     private InitiateAuthResult startAuth(String user, String password) {
