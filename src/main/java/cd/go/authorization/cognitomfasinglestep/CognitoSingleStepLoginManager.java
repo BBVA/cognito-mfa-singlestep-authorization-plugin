@@ -50,10 +50,10 @@ public class CognitoSingleStepLoginManager {
             userRequest.setAccessToken(login.getAuthenticationResult().getAccessToken());
             userResult = cognito.getUser(userRequest);
         } catch (InvalidCognitoUserCredentialsException e) {
-            LOG.error("Cognito authentication failed for user {0}", user);
+            LOG.error("Cognito authentication failed for user: " + user);
             return null;
         }
-        LOG.info("Cognito authentication succeeded for user {0}", user);
+        LOG.info("Cognito authentication succeeded for user: " + user);
         return userResult;
     }
 
